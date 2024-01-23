@@ -30,7 +30,7 @@ def operacion():
     i = 0
 
 
-# Botones
+# Botones de operadores
 
 boton1 = Button(ventana, text="1", width=5, height=2, command=lambda: click_boton(1))
 boton2 = Button(ventana, text="2", width=5, height=2, command=lambda: click_boton(2))
