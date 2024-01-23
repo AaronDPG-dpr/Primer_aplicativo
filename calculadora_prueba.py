@@ -8,7 +8,7 @@ i = 0
 cd_texto = Entry(ventana, font="Calibri 20")
 cd_texto.grid(row=0, column=0, columnspan=4, padx=5, pady=5)
 
-# Funciones
+# Funciones de operadores
 
 
 def click_boton(valor):
