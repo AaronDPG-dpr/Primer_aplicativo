@@ -10,6 +10,7 @@ alto = 600
 color_verde = (0, 200, 0)
 color_negro = (0, 0, 0)
 color_azul = (0, 0, 200)
+color_rojo = (200, 0, 0)
 
 # JUGADOR
 player_size = 50
@@ -20,6 +21,8 @@ player_pos = [ancho / 2, alto - (player_size * 2)]
 enemy_size = 50
 enemy_pos = [random.randint(0, ancho - enemy_size), 0]
 
+enemy2_size = 50
+enemy2_pos = [random.randint(0, ancho - enemy_size), 0]
 
 # ventana
 ventana = pygame.display.set_mode((ancho, alto))
@@ -35,13 +38,23 @@ def detectar_colision(player_pos, enemy_pos):
     py = player_pos[1]
     ex = enemy_pos[0]
     ey = enemy_pos[1]
+    ex2 = enemy_pos[0]
+    ey2 = enemy_pos[1]
 
     if (ex >= px and ex < (px + player_size)) or (px >= ex and px < (ex + enemy_size)):
         if (ey >= py and ey < (py + player_size)) or (
             py >= ey and py < (ey + enemy_size)
         ):
             return True
-    return False
+        return False
+    if (ex2 >= px and ex2 < (px + player_size)) or (
+        px >= ex2 and px < (ex2 + enemy_size)
+    ):
+        if (ey2 >= py and ey2 < (py + player_size)) or (
+            py >= ey2 and py < (ey2 + enemy_size)
+        ):
+            return True
+        return False
 
 
 while not game_over:
@@ -59,23 +72,35 @@ while not game_over:
             player_pos[0] = x
     ventana.fill(color_negro)
 
-    if enemy_pos[1] >= 0 and enemy_pos[1] < alto:
+    if (enemy_pos[1] >= 0 and enemy_pos[1] < alto) and (
+        enemy2_pos[1] >= 0 and enemy2_pos[1] < alto
+    ):
         enemy_pos[1] += 20
+        enemy2_pos[1] += 20
     else:
         enemy_pos[0] = random.randint(0, ancho - enemy_size)
         enemy_pos[1] = 0
+        enemy2_pos[0] = random.randint(0, ancho - enemy_size)
+        enemy2_pos[1] = 0
 
     # Colisiones
     if detectar_colision(player_pos, enemy_pos):
+        game_over = True
+    if detectar_colision(player_pos, enemy2_pos):
         game_over = True
     # Dibujar enemigo
     pygame.draw.rect(
         ventana, color_azul, (enemy_pos[0], enemy_pos[1], enemy_size, enemy_size)
     )
+
+    pygame.draw.rect(
+        ventana, color_rojo, (enemy2_pos[0], enemy2_pos[1], enemy2_size, enemy2_size)
+    )
+
     # Dibujar jugador
     pygame.draw.rect(
         ventana, color_verde, (player_pos[0], player_pos[1], player_size, player_size)
     )
 
-    clock.tick(30)
+    clock.tick(10)
     pygame.display.update()
